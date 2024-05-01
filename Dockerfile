@@ -1,7 +1,7 @@
 # Humble Dockerfile for Jetson Nano with Micro-ROS & Gazebo
 FROM osrf/ros:humble-desktop-full
 
-RUN apt-get update
+#RUN apt-get update
 
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
