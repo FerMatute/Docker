@@ -1,7 +1,7 @@
 # Humble Dockerfile for Jetson Nano with Micro-ROS & Gazebo
-FROM osrf/ros:humble-desktop-full
+FROM dustynv/ros:humble-desktop-l4t-r35.1.0
 
-#RUN apt-get update
+RUN apt-get update
 
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
@@ -14,6 +14,15 @@ RUN apt-get update && apt-get install -y \
     python3-rosdep \
     python3-vcstool \
     wget
+
+# nvidia-container-runtime
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
+
+# ENV NVIDIA_VISIBLE_DEVICES \
+#     ${NVIDIA_VISIBLE_DEVICES:-all}
+# ENV NVIDIA_DRIVER_CAPABILITIES \
+#     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # Create a workspace
 RUN mkdir -p ~/microros_ws/src
