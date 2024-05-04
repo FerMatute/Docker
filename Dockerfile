@@ -2,7 +2,6 @@
 FROM dustynv/ros:humble-desktop-l4t-r35.1.0
 
 # Kitware APT Repository
-RUN sudo apt-get update
 RUN sudo apt-get install ca-certificates gpg wget
 RUN test -f /usr/share/keyrings/kitware-archive-keyring.gpg || wget -q -O /usr/share/keyrings/kitware-archive-keyring.gpg https://apt.kitware.com/keys/kitware-archive-latest.asc
 RUN wget -0 - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor > /usr/share/keyrings/kitware-archive-keyring.gpg
