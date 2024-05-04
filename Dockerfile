@@ -1,6 +1,13 @@
 # Humble Dockerfile for Jetson Nano with Micro-ROS & Gazebo
 FROM dustynv/ros:humble-desktop-l4t-r35.1.0
 
+# Kitware APT Repository
+RUN apt-get update && apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    gnupg \
+    software-properties-common
+
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub
 
