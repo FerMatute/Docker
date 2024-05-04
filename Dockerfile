@@ -2,11 +2,12 @@
 FROM dustynv/ros:humble-desktop-l4t-r35.1.0
 
 # Kitware APT Repository
-RUN apt-get update && apt-get install -y \
-    apt-transport-https \
-    ca-certificates \
-    gnupg \
-    software-properties-common
+RUN sudo apt-get update
+RUN sudo apt-get install ca-certificates gpg wget
+RUN test -f /usr/share/keyrings/kitware-archive-keyring.gpg || wget -q -O /usr/share/keyrings/kitware-archive-keyring.gpg https://apt.kitware.com/keys/kitware-archive-latest.asc
+RUN wget -0 - https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor > /usr/share/keyrings/kitware-archive-keyring.gpg
+RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+RUN sudo apt-get install kitware-archive-keyring
 
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64/7fa2af80.pub
