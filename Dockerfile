@@ -2,7 +2,7 @@
 FROM dustynv/ros:humble-desktop-l4t-r35.1.0
 
 # Keys for Kitware
-RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A1A35D9
+RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6AF7F09730B3F0A4
 
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
