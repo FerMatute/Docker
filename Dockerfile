@@ -1,5 +1,9 @@
 # Humble Dockerfile for Jetson Nano with Micro-ROS & Gazebo
-FROM dustynv/ros:humble-desktop-l4t-r35.1.0
+#FROM dustynv/ros:humble-desktop-l4t-r35.1.0
+
+# Humble Image for Jetson Xavier NX
+# Image used for the Arcitecture linux/arm64/v8s
+FROM dustynv/ros:humble-desktop-l4t-r35.4.1
 
 # Keys for Kitware
 RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6AF7F09730B3F0A4
