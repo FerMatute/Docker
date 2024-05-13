@@ -1,13 +1,14 @@
 # Humble Dockerfile for Jetson Nano with Micro-ROS & Gazebo
-#FROM dustynv/ros:humble-desktop-l4t-r35.1.0
-
 # Humble Image for Jetson Xavier NX
 # Image used for the Arcitecture linux/arm64/v8s
 FROM dustynv/ros:humble-desktop-l4t-r35.4.1
 
-# Keys for Kitware
-RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6AF7F09730B3F0A4
 
+
+# Keys for Kitware
+#RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6AF7F09730B3F0A4
+
+# Running cte error here and in the Jetson Xavier NX
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
 
@@ -30,20 +31,20 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 #     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # Create a workspace
-#RUN mkdir -p ~/microros_ws/src
+RUN mkdir -p ~/microros_ws/src
 
 # Clone the micro-ROS tools
-#RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git ~/microros_ws/src/micro_ros_setup
+RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git ~/microros_ws/src/micro_ros_setup
 
 # Update rosdep
-#RUN rosdep update
-#RUN rosdep install --from-path ~/microros_ws --ignore-src -y
+RUN rosdep update
+RUN rosdep install --from-path ~/microros_ws --ignore-src -y
 
 # Build the workspace
-#RUN /bin/bash -c ". /opt/ros/$ROS_DISTRO/setup.sh; cd ~/microros_ws; colcon build"
+RUN /bin/bash -c ". /opt/ros/$ROS_DISTRO/setup.sh; cd ~/microros_ws; colcon build"
 
 # Source the workspace
-#RUN echo 'source ~/microros_ws/install/local_setup.bash' >> ~/.bashrc
+RUN echo 'source ~/microros_ws/install/local_setup.bash' >> ~/.bashrc
 
 # Install Gazebo
 RUN apt-get update && apt-get install -y \
