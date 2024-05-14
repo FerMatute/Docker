@@ -25,11 +25,6 @@ RUN apt-get install -y \
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 
-# ENV NVIDIA_VISIBLE_DEVICES \
-#     ${NVIDIA_VISIBLE_DEVICES:-all}
-# ENV NVIDIA_DRIVER_CAPABILITIES \
-#     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-
 # Create a workspace
 #RUN mkdir -p ~/microros_ws/src
 
@@ -48,10 +43,7 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 
 # Install Gazebo
 RUN apt-get update && apt-get install -y \
-    gazebo9 \
-    libgazebo9-dev \
-    ros-$ROS_DISTRO-gazebo-ros-pkgs \
-    ros-$ROS_DISTRO-gazebo-ros-control
+    curl -sSL http://get.gazebosim.org | sh
 
 # Install Pytorch
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
