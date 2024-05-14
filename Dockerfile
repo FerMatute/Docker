@@ -31,20 +31,20 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 #     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 # Create a workspace
-RUN mkdir -p ~/microros_ws/src
+#RUN mkdir -p ~/microros_ws/src
 
 # Clone the micro-ROS tools
-RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git ~/microros_ws/src/micro_ros_setup
+#RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git ~/microros_ws/src/micro_ros_setup
 
 # Update rosdep
-RUN rosdep update
-RUN rosdep install --from-path ~/microros_ws --ignore-src -y
+#RUN rosdep update
+#RUN rosdep install --from-path ~/microros_ws --ignore-src -y
 
 # Build the workspace
-RUN /bin/bash -c ". /opt/ros/$ROS_DISTRO/setup.sh; cd ~/microros_ws; colcon build"
+#RUN /bin/bash -c ". /opt/ros/$ROS_DISTRO/setup.sh; cd ~/microros_ws; colcon build"
 
 # Source the workspace
-RUN echo 'source ~/microros_ws/install/local_setup.bash' >> ~/.bashrc
+#RUN echo 'source ~/microros_ws/install/local_setup.bash' >> ~/.bashrc
 
 # Install Gazebo
 RUN apt-get update && apt-get install -y \
