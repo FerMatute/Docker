@@ -24,6 +24,10 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 RUN apt-get update && apt-get install -y \
     curl -sSL http://get.gazebosim.org | sh
 
+# Update dependencies using rosdep
+RUN sudo apt update && rosdep update
+RUN rosdep install --from-paths src --ignore-src -y
+
 # Install Pytorch
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
@@ -35,9 +39,5 @@ RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git sr
 # Build micro-ROS tools and source them
 RUN colcon build
 RUN source install/local_setup.bash
-
-# Update dependencies using rosdep
-RUN sudo apt update && rosdep update
-RUN rosdep install --from-paths src --ignore-src -y
 
 RUN echo 'All set!'
