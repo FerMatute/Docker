@@ -3,11 +3,6 @@
 # Image used for the Arcitecture linux/arm64/v8s
 FROM dustynv/ros:humble-desktop-l4t-r35.4.1
 
-
-
-# Keys for Kitware
-#RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6AF7F09730B3F0A4
-
 # Running cte error here and in the Jetson Xavier NX
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
@@ -25,27 +20,27 @@ RUN apt-get install -y \
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 
-# Create a workspace
-#RUN mkdir -p ~/microros_ws/src
-
-# Clone the micro-ROS tools
-#RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git ~/microros_ws/src/micro_ros_setup
-
-# Update rosdep
-#RUN rosdep update
-#RUN rosdep install --from-path ~/microros_ws --ignore-src -y
-
-# Build the workspace
-#RUN /bin/bash -c ". /opt/ros/$ROS_DISTRO/setup.sh; cd ~/microros_ws; colcon build"
-
-# Source the workspace
-#RUN echo 'source ~/microros_ws/install/local_setup.bash' >> ~/.bashrc
-
 # Install Gazebo
 RUN apt-get update && apt-get install -y \
     curl -sSL http://get.gazebosim.org | sh
 
 # Install Pytorch
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+# Source the ROS 2 installation
+RUN source /opt/ros/$ROS_DISTRO/setup.bash
+
+# Create a workspace and download the micro-ROS tools
+RUN mkdir microros_ws
+RUN cd microros_ws
+RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git src/micro_ros_setup
+
+# Build micro-ROS tools and source them
+RUN colcon build
+RUN source install/local_setup.bash
+
+# Update dependencies using rosdep
+RUN sudo apt update && rosdep update
+RUN rosdep install --from-paths src --ignore-src -y
 
 RUN echo 'All set!'
