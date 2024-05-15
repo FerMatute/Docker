@@ -27,9 +27,6 @@ RUN apt-get update && apt-get install -y \
 # Install Pytorch
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-# Source the ROS 2 installation
-RUN source /opt/ros/$ROS_DISTRO/setup.bash
-
 # Create a workspace and download the micro-ROS tools
 RUN mkdir microros_ws
 RUN cd microros_ws
