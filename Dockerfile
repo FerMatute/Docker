@@ -5,16 +5,6 @@ FROM dustynv/ros:humble-desktop-l4t-r35.4.1
 
 COPY Purple_whales/ /Purple_whales/
 
-ARG USERNAME=ros
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
-# Create a non-root user
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && mkdir /home/$USERNAME/.config && chown $USER_UID:$USER_UID /home/$USERNAME/.config
-USER root
-
 # Running cte error here and in the Jetson Xavier NX
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
@@ -42,5 +32,21 @@ RUN pip3 install torch torchvision torchaudio --index-url https://download.pytor
 # Update dependencies using rosdep
 RUN sudo apt update && rosdep update
 RUN rosdep install --from-paths src --ignore-src -y
+
+ARG USERNAME=ros
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create a non-root user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && mkdir /home/$USERNAME/.config && chown $USER_UID:$USER_UID /home/$USERNAME/.config
+
+# Create sudo user
+RUN apt-get update \
+&& apt-get install -y sudo\
+&& echo $USERNAME ALL =\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
+&& chmod 0440 /etc/sudoers.d/$USERNAME \
+&& rm -rf /var/lib/apt/lists/*
 
 RUN echo 'All set!'
