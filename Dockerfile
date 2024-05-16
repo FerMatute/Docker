@@ -3,7 +3,7 @@
 # Image used for the Arcitecture linux/arm64/v8s
 FROM dustynv/ros:humble-desktop-l4t-r35.4.1
 
-COPY Purple_Whales/ /Purple_Whales/
+COPY Purple_whales/ /Purple_whales/
 
 ARG USERNAME=ros
 ARG USER_UID=1000
