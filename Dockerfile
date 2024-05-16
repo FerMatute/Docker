@@ -3,6 +3,17 @@
 # Image used for the Arcitecture linux/arm64/v8s
 FROM dustynv/ros:humble-desktop-l4t-r35.4.1
 
+COPY Purple_Whales/ /Purple_Whales/
+
+ARG USERNAME=ros
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create a non-root user
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && mkdir /home/$USERNAME/.config && chown $USER_UID:$USER_UID /home/$USERNAME/.config
+
 # Running cte error here and in the Jetson Xavier NX
 # Install Python3 and Git
 RUN apt-get install -y git && apt-get install -y python3-pip
@@ -24,20 +35,11 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 RUN apt-get update && apt-get install -y \
     curl -sSL http://get.gazebosim.org | sh
 
-# Update dependencies using rosdep
-RUN sudo apt update && rosdep update
-RUN rosdep install --from-paths src --ignore-src -y
-
 # Install Pytorch
 RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
-# Create a workspace and download the micro-ROS tools
-RUN mkdir microros_ws
-RUN cd microros_ws
-RUN git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git src/micro_ros_setup
-
-# Build micro-ROS tools and source them
-RUN colcon build
-RUN source install/local_setup.bash
+# Update dependencies using rosdep
+RUN sudo apt update && rosdep update
+RUN rosdep install --from-paths src --ignore-src -y
 
 RUN echo 'All set!'
