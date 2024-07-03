@@ -1,2 +1,0 @@
-robot_vision
-robot_vision/submodules

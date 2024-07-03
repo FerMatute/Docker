@@ -1,3 +1,0 @@
-[console_scripts]
-line_follower = robot_vision.line_follower:main
-
